@@ -10,7 +10,13 @@ export const NoteArchive = ({ archivedNotes, onDelete }) => {
           <p className="notes-list__empty-message">No Notes</p>
         ) : (
           archivedNotes.map((note) => {
-            return <NoteItem key={note.id} {...note} onDelete={onDelete} />;
+            return (
+              <NoteItem
+                key={note.id}
+                {...note}
+                onDelete={() => onDelete(note.id, true)}
+              />
+            );
           })
         )}
       </div>

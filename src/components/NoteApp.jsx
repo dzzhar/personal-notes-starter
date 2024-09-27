@@ -17,9 +17,16 @@ export class NoteApp extends React.Component {
     this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
   }
 
-  onDeleteHandler(id) {
-    const notes = this.state.notes.filter((note) => note.id !== id);
-    this.setState({ notes });
+  onDeleteHandler(id, fromArchived = false) {
+    if (fromArchived) {
+      const archivedNotes = this.state.archivedNotes.filter(
+        (note) => note.id !== id
+      );
+      this.setState({ archivedNotes });
+    } else {
+      const notes = this.state.notes.filter((note) => note.id !== id);
+      this.setState({ notes });
+    }
   }
 
   onArchiveHandler(id) {
@@ -44,7 +51,8 @@ export class NoteApp extends React.Component {
             id: +new Date(),
             title,
             body,
-            createdAt: new Date(),
+            archived: false,
+            createdAt: new Date().toISOString(),
           },
         ],
       };
@@ -69,7 +77,7 @@ export class NoteApp extends React.Component {
           />
           <NoteArchive
             archivedNotes={this.state.archivedNotes}
-            onDelete={this.onDeleteHandler}
+            onDelete={(id) => this.onDeleteHandler(id, true)}
           />
         </div>
       </main>
